@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: ${CONTAINER_DB_NAME}
+    image: postgres:16.1-alpine3.18
+    env_file:
+      - backend/.env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    ports:
+      - "5432:5432"
+    volumes:
+      - /var/lib/postgresql/data
+      - .:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    restart: unless-stopped
+    networks:
+      - network_amarekin
+
+networks:
+  network_amarekin:
+    driver: bridge

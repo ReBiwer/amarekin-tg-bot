@@ -10,6 +10,7 @@ dependencies = [
     "alembic>=1.16.1",
     "asyncpg>=0.30.0",
     "colorlog>=6.9.0",
+    "dishka>=1.6.0",
     "fastapi[all]>=0.115.12",
     "greenlet>=3.2.3",
     "httpx[socks]>=0.28.1",

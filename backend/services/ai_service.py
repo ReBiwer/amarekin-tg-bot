@@ -26,14 +26,13 @@ class AIService:
         - добавить подгрузку промта из БД (PostgreSQL)
         - добавить RAG
     """
-    def __init__(self, user_id: int):
+    def __init__(self):
         self.model = ChatOpenAI(
             model="gpt-3.5-turbo",
             temperature=0.7,
             api_key=settings.OPENAI_API_KEY,
             http_async_client=AsyncClient(proxy=settings.PROXY_URL)
         )
-        self.memory = self._get_memory(user_id)
         self.prompt = PromptTemplate(
             input_variables=["history", "context", "input"],
             template="""
@@ -77,13 +76,14 @@ class AIService:
         )
 
     async def astream_response(
-        self, query: str, formatted_context: str = None,
+        self, user_id: int, query: str, formatted_context: str = None,
     ) -> AsyncGenerator[str, None]:
         try:
+            memory = self._get_memory(user_id)
             query_dict = {
                 "input": query,
                 "context": formatted_context,
-                "history": self.memory.load_memory_variables({})["history"]
+                "history": memory.load_memory_variables({})["history"]
             }
             logger.info(f"Начинаем стриминг ответа для запроса: {query}")
             output_text = ""
@@ -94,7 +94,7 @@ class AIService:
                     yield text_chunk
                     output_text += text_chunk
 
-            await self.memory.asave_context({"inputs": query}, {"output": output_text})
+            await memory.asave_context({"inputs": query}, {"output": output_text})
             logger.info("Стриминг ответа завершен, история чата сохранена")
         except Exception as e:
             logger.error(f"Ошибка при стриминге ответа: {e}")

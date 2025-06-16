@@ -4,7 +4,7 @@ services:
     container_name: ${CONTAINER_DB_NAME}
     image: postgres:16.1-alpine3.18
     env_file:
-      - backend/.env
+      - .env
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
@@ -26,7 +26,7 @@ services:
   redis:
     image: redis:latest
     env_file:
-      - backend/.env
+      - .env
     container_name: redis_container
     ports:
       - '6379:6379'
@@ -42,7 +42,7 @@ services:
   chromadb:
     image: chromadb/chroma:latest
     env_file:
-      - backend/.env
+      - .env
     container_name: ${CONTAINER_CHROMA_NAME}
     ports:
       - "8000:8000"

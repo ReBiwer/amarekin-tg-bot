@@ -100,6 +100,26 @@ class AIService:
             logger.error(f"Ошибка при стриминге ответа: {e}")
             yield "Произошла ошибка при стриминге ответа."
 
+    async def ainvoke_response(
+        self, user_id: int, query: str, formatted_context: str = None,
+    ) -> str:
+        try:
+            memory = self._get_memory(user_id)
+            query_dict = {
+                "input": query,
+                "context": formatted_context,
+                "history": memory.load_memory_variables({})["history"]
+            }
+            logger.info(f"Получение ответа для запроса: {query}")
+            ai_response = await self.llm_chain.ainvoke(query_dict)
+            output_text = ai_response.get("text")
+            await memory.asave_context({"inputs": query}, {"output": output_text})
+            logger.info(f"Ответ получен: {output_text}")
+            return output_text
+        except Exception as e:
+            logger.error(f"Ошибка при получении ответа: {e}")
+            return "Произошла ошибка при получении ответа."
+
 
 # # TODO Убрать потом, написал для тестирования сервиса
 # if __name__ == "__main__":

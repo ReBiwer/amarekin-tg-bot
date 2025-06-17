@@ -1,11 +1,17 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
+
+from uuid import UUID
 
 
 class UserBase(BaseModel):
     telegram_id: int
     username: Optional[str] = None
-    full_name: str
+    first_name: str
+
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
 
 
 class UserCreate(UserBase):
@@ -13,7 +19,4 @@ class UserCreate(UserBase):
 
 
 class UserResponse(UserBase):
-    id: int
-
-    class Config:
-        from_attributes = True 
+    uuid: UUID

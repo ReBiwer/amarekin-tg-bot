@@ -14,7 +14,7 @@ async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_
 class Base(AsyncAttrs, DeclarativeBase):
     __abstract__ = True
 
-    id: Mapped[UUID] = mapped_column(UUID, primary_key=True)
+    uuid: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4())
     created_at: Mapped[datetime] = mapped_column(TIMESTAMP, server_default=func.now())
     # updated_at: Mapped[datetime] = mapped_column(
     #     TIMESTAMP,

@@ -6,8 +6,8 @@ from uuid import UUID
 
 class UserBase(BaseModel):
     telegram_id: int
-    username: Optional[str] = None
-    first_name: str
+    username: str
+    first_name: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True,

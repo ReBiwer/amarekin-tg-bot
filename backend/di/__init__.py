@@ -3,7 +3,7 @@ from dishka.integrations.fastapi import setup_dishka as fastapi_dishka
 from fastapi import FastAPI
 
 from backend.di.ai import AIProvider
-from backend.di.user_dao import UserDAOProvider
+from backend.di.user_dao import DBSessionProvider
 
 
 def init_di_web(app: FastAPI) -> None:
@@ -14,5 +14,5 @@ def init_di_web(app: FastAPI) -> None:
 def container_factory() -> AsyncContainer:
     return make_async_container(
         AIProvider(),
-        UserDAOProvider()
+        DBSessionProvider()
     )

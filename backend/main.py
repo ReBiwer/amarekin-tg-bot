@@ -9,18 +9,8 @@ from backend.core.log_settings import setup_logging
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AbstractAsyncContextManager[None]:
-    setup_logging()
-    init_di_web(app)
     yield
     await app.state.dishka_container.close()
-
-app = FastAPI(
-    title="Telegram AI Assistant Backend",
-    description="Backend for handling AI requests from Telegram bot."
-)
-
-app.include_router(ai.router)
-app.include_router(users.router)
 
 
 def create_app() -> FastAPI:
@@ -29,8 +19,12 @@ def create_app() -> FastAPI:
         description="Backend for handling AI requests from Telegram bot.",
         lifespan=lifespan,
     )
+    app.include_router(ai.router)
+    app.include_router(users.router)
+    setup_logging()
+    init_di_web(app)
     return app
 
 
 if __name__ == "__main__":
-    uvicorn.run("web:create_app", port=8000, factory=True, reload=True)
+    uvicorn.run("backend.main:create_app", port=8080, factory=True, reload=True)

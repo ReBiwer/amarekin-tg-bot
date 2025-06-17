@@ -3,7 +3,7 @@ from abc import ABC
 from typing import List, TypeVar, Type
 from pydantic import BaseModel
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.future import select
+from sqlalchemy import select
 from sqlalchemy import update as sqlalchemy_update, delete as sqlalchemy_delete, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -72,8 +72,7 @@ class BaseDAO[Base](ABC):
             new_instance = self.model(**values_dict)
             self._session.add(new_instance)
             logger.info(f"Запись {self.model.__name__} успешно добавлена.")
-            await self._session.commit()
-            await self._session.refresh(new_instance)
+            await self._session.flush()
             return new_instance
         except SQLAlchemyError as e:
             logger.error(f"Ошибка при добавлении записи: {e}")

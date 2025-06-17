@@ -1,6 +1,7 @@
 from dishka import FromDishka
 from dishka.integrations.fastapi import DishkaRoute
 from fastapi import APIRouter
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.schemas.user import UserCreate, UserResponse
 from db.dao.user import UserDAO
@@ -14,7 +15,9 @@ router = APIRouter(
 @router.post("/telegram/add")
 async def add_user(
         user: UserCreate,
-        user_dao: FromDishka[UserDAO],
+        db_session: FromDishka[AsyncSession],
 ) -> UserResponse:
-    new_user = await user_dao.add(user)
+    print(id(db_session))
+    dao = UserDAO(db_session)
+    new_user = await dao.add_or_get(user)
     return UserResponse.model_validate(new_user)

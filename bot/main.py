@@ -1,5 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.types import BotCommand, BotCommandScopeDefault
 
 from bot.config import settings
@@ -16,7 +18,10 @@ async def set_commands(bot: Bot):
 
 
 async def main():
-    bot = Bot(token=settings.TELEGRAM_BOT_TOKEN)
+    bot = Bot(
+        token=settings.TELEGRAM_BOT_TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
     await set_commands(bot)
     dp = Dispatcher()
     dp.include_router(main_router)

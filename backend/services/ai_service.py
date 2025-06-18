@@ -2,7 +2,6 @@ import logging
 from typing import AsyncGenerator
 
 from httpx import AsyncClient
-from langgraph.checkpoint.base import BaseCheckpointSaver
 
 from langchain.chains.llm import LLMChain
 from langchain.prompts import PromptTemplate
@@ -119,23 +118,3 @@ class AIService:
         except Exception as e:
             logger.error(f"Ошибка при получении ответа: {e}")
             return "Произошла ошибка при получении ответа."
-
-
-# # TODO Убрать потом, написал для тестирования сервиса
-# if __name__ == "__main__":
-#     async def main(q):
-#         ai_chat = AIService(123)
-#         response = ""
-#         async for r in ai_chat.astream_response(q):
-#             response += r
-#         return response
-#
-#
-#     import asyncio
-#     from backend.core.log_settings import setup_logging
-#     q_1 = "Меня зовут Владимир. Что ты умеешь?"
-#     text = asyncio.run(main(q_1))
-#     print(text)
-#     q_2 = "Напомни, как меня зовут?"
-#     text = asyncio.run(main(q_2))
-#     print(text)

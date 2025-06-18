@@ -30,11 +30,14 @@ def setup_logging() -> None:
                 },
             },
         },
+        "filters": {
+            "user_websocket": {"()": "logging.Filter", "name": "user_websocket"},
+        },
         "handlers": {
             "console": {
                 "class": "logging.StreamHandler",
                 "level": "DEBUG",
-                "formatter": "console",
+                "formatter": "default",
                 "stream": "ext://sys.stdout",
             },
         },
@@ -43,6 +46,10 @@ def setup_logging() -> None:
                 "level": "DEBUG",
                 "handlers": ["console"],
             },
+            "": {
+                "level": "INFO",
+                "handlers": ["console"]
+            }
         },
     }
 

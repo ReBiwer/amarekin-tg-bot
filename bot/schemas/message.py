@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class UserMessage(BaseModel):
+class UserQuery(BaseModel):
     query: str
     user_id: int
     chat_id: int

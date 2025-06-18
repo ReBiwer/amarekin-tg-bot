@@ -1,14 +1,14 @@
 from httpx import AsyncClient
 
 from bot.config import settings
-from bot.schemas.message import UserMessage, AIResponse
+from bot.schemas.message import UserQuery, AIResponse
 
 
 class AIService:
     def __init__(self):
         self.client = AsyncClient()
 
-    async def send_query_to_ai(self, user_message: UserMessage) -> AIResponse | None:
+    async def send_query_to_ai(self, user_message: UserQuery) -> AIResponse | None:
         response = await self.client.post(
             url=f"{settings.BACKEND_URL}/ai/generate_response",
             content=user_message.model_dump_json(),

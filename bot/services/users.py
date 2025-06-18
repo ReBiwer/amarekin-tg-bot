@@ -15,7 +15,7 @@ class AuthUser:
     async def check_user(self, user: User):
         response = await self.client.post(
             url=f"{settings.BACKEND_URL}/users/telegram/add",
-            json=user.model_dump_json()
+            content=user.model_dump_json()
         )
         return response.status_code == 200
 

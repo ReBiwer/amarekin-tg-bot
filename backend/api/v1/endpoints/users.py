@@ -17,7 +17,6 @@ async def add_user(
         user: UserCreate,
         db_session: FromDishka[AsyncSession],
 ) -> UserResponse:
-    print(id(db_session))
     dao = UserDAO(db_session)
     new_user = await dao.add_or_get(user)
     return UserResponse.model_validate(new_user)

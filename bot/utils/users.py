@@ -9,4 +9,4 @@ def extract_user_data(message: Message) -> User:
         "username": message.from_user.username,
         "first_name": message.from_user.first_name if message.from_user.first_name else None
     }
-    return User.model_validate(**user_data)
+    return User.model_validate(user_data)

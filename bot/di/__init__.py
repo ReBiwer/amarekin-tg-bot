@@ -3,16 +3,17 @@ from dishka.integrations.aiogram import (
     AiogramProvider,
     setup_dishka,
 )
-from dishka import make_async_container, Provider, provide, Scope, AsyncContainer
+from dishka import make_async_container, AsyncContainer
 
-from bot.dialogs.start import router as start_router
 from bot.di.auth import AuthProvider
+from bot.di.logger_di import LoggerProvider
 
 
 def container_factory() -> AsyncContainer:
     return make_async_container(
         AiogramProvider(), # для получения объектов AiogramMiddlewareData и TelegramObject в провайдерах
         AuthProvider(),
+        LoggerProvider()
     )
 
 def init_di_bot(dp: Dispatcher) -> None:

@@ -14,6 +14,6 @@ router = APIRouter(
 
 
 @router.post("/generate_response")
-async def generate_response(user_message: UserMessage, ai_service: FromDishka[AIService]):
+async def generate_response(user_message: UserMessage, ai_service: FromDishka[AIService]) -> AIMessage:
     ai_response_content = await ai_service.ainvoke_response(user_message.user_id, user_message.query)
     return AIMessage(response=ai_response_content, chat_id=user_message.chat_id)

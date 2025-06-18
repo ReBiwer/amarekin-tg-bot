@@ -4,7 +4,7 @@ import logging.config
 
 from backend.core.config import settings
 
-LOG_DIR = settings.BASE_DIR / "logs"
+LOG_DIR = settings.BASE_DIR / "logs/backend"
 
 
 def setup_logging() -> None:
@@ -29,9 +29,6 @@ def setup_logging() -> None:
                     "CRITICAL": "bold_red",
                 },
             },
-        },
-        "filters": {
-            "user_websocket": {"()": "logging.Filter", "name": "user_websocket"},
         },
         "handlers": {
             "console": {

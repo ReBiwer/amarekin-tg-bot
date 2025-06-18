@@ -9,7 +9,6 @@ LOG_DIR = settings.BASE_DIR / "logs/tg_bot"
 
 def setup_logging() -> None:
     os.makedirs(LOG_DIR, exist_ok=True)
-
     logging_config = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -30,9 +29,6 @@ def setup_logging() -> None:
                 },
             },
         },
-        "filters": {
-            "user_websocket": {"()": "logging.Filter", "name": "user_websocket"},
-        },
         "handlers": {
             "console": {
                 "class": "logging.StreamHandler",
@@ -52,5 +48,6 @@ def setup_logging() -> None:
             }
         },
     }
+
 
     logging.config.dictConfig(logging_config)
